@@ -1,0 +1,150 @@
+<mat-toolbar>
+  <span
+    ><img
+      class="imglogo"
+      src="https://www.evertecinc.com/wp-content/uploads/2020/07/logo-evertec.png"
+      width="170px"
+      alt=""
+  /></span>
+  <span class="example-spacer"></span>
+  <button mat-button class="example-icon favorite-icon" (click)="openDialog()">
+    <mat-icon>add_circle</mat-icon> Crear
+  </button>
+</mat-toolbar>
+
+<div>
+  <mat-form-field>
+    <mat-label>Buscar</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ej. Rafael"
+      #input
+    />
+  </mat-form-field>
+</div>
+
+<div id="div" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
+      <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="birthDay">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        Fecha Nacimiento
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.birthDay | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="maritalStatus">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado Civil</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.maritalStatus === 1 ? "Soltero" : "Casado" }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="hasSiblings">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Tiene Hermanos</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.hasSiblings ? "Si" : "No" }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acctions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openDialogEdit(element)">
+            <mat-icon>edit</mat-icon>
+            <span>Editar</span>
+          </button>
+          <button mat-menu-item (click)="openDialogDelete(element.id)">
+            <mat-icon>delete</mat-icon>
+            <span>Eliminar</span>
+          </button></mat-menu
+        >
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          mat-icon-button
+          aria-label="expand row"
+          (click)="
+            expandedElement = expandedElement === element ? null : element;
+            $event.stopPropagation()
+          "
+        >
+          <mat-icon *ngIf="expandedElement !== element"
+            >keyboard_arrow_down</mat-icon
+          >
+          <mat-icon *ngIf="expandedElement === element"
+            >keyboard_arrow_up</mat-icon
+          >
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [attr.colspan]="columnsToDisplayWithExpand.length"
+      >
+        <div
+          class="example-element-detail"
+          [@detailExpand]="
+            element == expandedElement ? 'expanded' : 'collapsed'
+          "
+        >
+          <div class="example-element-description">
+            <img width="150px" [src]="element.userPhoto" alt="" />
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+    <tr
+      mat-row
+      *matRowDef="let element; columns: columnsToDisplayWithExpand"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: ['expandedDetail']"
+      class="example-detail-row"
+    ></tr>
+  </table>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20, 40, 80, 160]"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>
+
+<router-outlet></router-outlet>
+

@@ -1,0 +1,75 @@
+<h1 mat-dialog-title>
+  {{ dataInfo ? "Editar Usuario" : "Agregar Usuario" }}
+</h1>
+
+<form [formGroup]="formDataInfo" (submit)="dataInfo ? edit() : add()">
+  <div mat-dialog-content>
+    <input type="hidden" formControlName="id" />
+
+    <mat-form-field class="largo">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" required />
+      <mat-error *ngIf="formValue('name')?.errors?.['required']"
+        >Requerido</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="largo">
+      <mat-label>Apellido</mat-label>
+      <input type="text" matInput formControlName="lastName" required />
+      <mat-error *ngIf="formValue('lastName')?.errors?.['required']"
+        >Requerido</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="largo">
+      <mat-label>Fecha de Nacimiento</mat-label>
+      <input type="date" matInput formControlName="birthDay" required />
+      <mat-error *ngIf="formValue('birthDay')?.errors?.['required']"
+        >Requerido</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="largo">
+      <mat-label>Estado Civil</mat-label>
+      <mat-select formControlName="maritalStatus" required>
+        <mat-option [value]="1"> Soltero </mat-option>
+        <mat-option [value]="2"> Casado </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formValue('maritalStatus')?.errors?.['required']"
+        >Requerido</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="largo">
+      <mat-label>¿Tiene Hermanos?</mat-label>
+      <mat-select formControlName="hasSiblings" required>
+        <mat-option [value]="true"> Si </mat-option>
+        <mat-option [value]="false"> No </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formValue('hasSiblings')?.errors?.['required']"
+      >Requerido</mat-error
+    >
+    </mat-form-field>
+
+    <div>
+      <label class="inputFile">Foto:</label>
+      <input
+        type="file"
+        accept=".jpg,.png"
+        (change)="getFile($event)"
+        required
+      />
+    </div>
+    <br>
+    <img width="100px" [src]="archivo" alt="">
+  </div>
+  <div mat-dialog-actions>
+    <button class="boton" type="button" mat-raised-button (click)="close()">
+      Cancelar
+    </button>
+    <button class="boton" mat-raised-button color="primary">
+      {{ dataInfo ? "Actualizar" : "Guardar" }}
+    </button>
+  </div>
+</form>

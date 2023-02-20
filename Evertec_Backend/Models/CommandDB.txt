@@ -1,0 +1,1 @@
+﻿Scaffold-DBContext "Server=localhost;Database=Evertec;Trusted_Connection=True;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context EvertecCTX -Force
